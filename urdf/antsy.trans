@@ -1,0 +1,202 @@
+<?xml version="1.0" ?>
+<robot name="antsy" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<transmission name="base_to_coxa_ml_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="base_to_coxa_ml">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="base_to_coxa_ml_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="coxa_ml_to_tibia_ml_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="coxa_ml_to_tibia_ml">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="coxa_ml_to_tibia_ml_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="tibia_ml_to_foot_ml_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="tibia_ml_to_foot_ml">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="tibia_ml_to_foot_ml_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="base_to_coxa_fl_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="base_to_coxa_fl">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="base_to_coxa_fl_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="coxa_fl_to_tibia_fl_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="coxa_fl_to_tibia_fl">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="coxa_fl_to_tibia_fl_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="tibia_fl_to_foot_fl_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="tibia_fl_to_foot_fl">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="tibia_fl_to_foot_fl_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="base_to_coxa_bl_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="base_to_coxa_bl">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="base_to_coxa_bl_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="coxa_bl_to_tibia_bl_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="coxa_bl_to_tibia_bl">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="coxa_bl_to_tibia_bl_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="tibia_bl_to_foot_bl_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="tibia_bl_to_foot_bl">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="tibia_bl_to_foot_bl_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="base_mr_to_coxa_mr_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="base_mr_to_coxa_mr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="base_mr_to_coxa_mr_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="coxa_mr_to_tibia_mr_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="coxa_mr_to_tibia_mr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="coxa_mr_to_tibia_mr_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="tibia_mr_to_foot_mr_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="tibia_mr_to_foot_mr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="tibia_mr_to_foot_mr_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="base_to_coxa_fr_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="base_to_coxa_fr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="base_to_coxa_fr_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="coxa_fr_to_tibia_fr_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="coxa_fr_to_tibia_fr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="coxa_fr_to_tibia_fr_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="tibia_fr_to_foot_fr_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="tibia_fr_to_foot_fr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="tibia_fr_to_foot_fr_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="base_to_coxa_br_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="base_to_coxa_br">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="base_to_coxa_br_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="coxa_br_to_tibia_br_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="coxa_br_to_tibia_br">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="coxa_br_to_tibia_br_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="tibia_br_to_foot_br_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="tibia_br_to_foot_br">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="tibia_br_to_foot_br_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+</robot>
