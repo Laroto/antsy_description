@@ -206,19 +206,20 @@
       filename="gz-sim-odometry-publisher-system"
       name="gz::sim::systems::OdometryPublisher">
       <odom_publish_frequency>50</odom_publish_frequency>
-      <odom_topic>/model/hexapod/odometry</odom_topic>
+      <odom_topic>/antsy/odometry</odom_topic>
       <odom_frame>world</odom_frame>
       <robot_base_frame>base_link</robot_base_frame>
     </plugin>
     <plugin
       filename="gz-sim-joint-state-publisher-system"
       name="gz::sim::systems::JointStatePublisher">
-      <topic>/joint_state</topic>
+      <topic>/antsy/joint_state</topic>
     </plugin>
     <!-- TODO doesn't work, no imu topic in Gazebo gets published -->
     <plugin
       filename="gz-sim-imu-system"
       name="gz::sim::systems::Imu">
+      <topic>/antsy/imu</topic>
     </plugin>
   </gazebo>
 </robot>
