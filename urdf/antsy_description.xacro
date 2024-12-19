@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<robot name="hexapod" xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:include filename="$(find antsy_description)/urdf/properties.urdf.xacro"/>
+
+  <!-- base_footprint -->
+  <link name="base_footprint" />
+  <joint name="base_footprint_joint" type="fixed"> 
+    <parent link="base_footprint" />
+    <child link="base_link" />
+  </joint>
+
+  <!-- base_link -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 ${pi/2}" />
+      <geometry>
+          <mesh filename="file://$(find antsy_description)/meshes/simple_meshes/frame_simple.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="frame" />
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.300 0.200 0.050" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.300" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.0021" iyy="0.0046" izz="0.0065"
+               ixy="0" ixz="0" iyz="0" />
+    </inertial>
+  </link>
+
+  <!-- legs -->
+  <xacro:macro name="servo" params="index joint_name">
+    <gazebo>
+      <plugin
+        filename="gz-sim-joint-position-controller-system"
+        name="gz::sim::systems::JointPositionController">
+        <joint_name>${joint_name}</joint_name>
+        <use_actuator_msg>true</use_actuator_msg>
+        <actuator_number>${index}</actuator_number>
+        <cmd_max>${servo_effort_limit}</cmd_max>
+        <cmd_min>${-servo_effort_limit}</cmd_min>
+        <p_gain>${servo_p_gain}</p_gain>
+        <i_gain>0.</i_gain>
+        <d_gain>0.</d_gain>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="leg" params="index reflect xyz rpy">
+    <!-- leg_X: fixed to base_link -->
+    <link name="leg_${index}" />
+    <joint name="base_link__leg_${index}" type="fixed"> 
+      <parent link="base_link" />
+      <child link="leg_${index}" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
+    </joint>
+
+    <!-- leg_Xa: shoulder  -->
+    <link name="leg_${index}a">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find antsy_description)/meshes/simple_meshes/coxa_simple.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="feet" />
+      </visual>
+      <collision>
+        <origin xyz="${leg_a_length/2} 0.05 0.05"/>
+        <geometry>
+          <box size="${leg_a_length} 0.05 0.05" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.100" />
+        <origin xyz="${leg_a_length/2} 0 0" />
+        <inertia ixx="0.000028" iyy="0.000028" izz="0.000028"
+                 ixy="0"        ixz="0"        iyz="0" />
+      </inertial>
+    </link>
+    <joint name="leg_${index}_base__leg_${index}a" type="revolute">
+      <axis xyz="0 0 1" />
+      <limit lower="${joint_a_limit_lower}" upper="${joint_a_limit_upper}"
+          effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
+      <parent link="leg_${index}" />
+      <child link="leg_${index}a" />
+      <dynamics friction="${servo_static_friction}" damping="${servo_damping_friction}" />
+    </joint>
+
+    <!-- leg_Xb: upper segment -->
+    <link name="leg_${index}b">
+      <visual>
+        <origin xyz="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find antsy_description)/meshes/simple_meshes/tibia_simple.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="feet" />
+      </visual>
+      <collision>
+        <origin xyz="${leg_b_length/2} 0 0" />
+        <geometry>
+          <box size="${leg_b_length} 0.06 0.025" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.100" />
+        <origin xyz="${leg_b_length/2} 0 0" />
+        <inertia ixx="0.000195" iyy="0.000010" izz="0.000195"
+                 ixy="0"        ixz="0"        iyz="0" />
+      </inertial>
+    </link>
+    <joint name="leg_${index}a__leg_${index}b" type="revolute">
+      <axis xyz="0 1 0" />
+      <limit lower="${joint_b_limit_lower}" upper="${joint_b_limit_upper}"
+        effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
+      <parent link="leg_${index}a" />
+      <child link="leg_${index}b" />
+      <origin xyz="${leg_a_length} 0 -0.010" />
+      <dynamics friction="${servo_static_friction}" damping="${servo_damping_friction}" />
+    </joint>
+
+    <!-- leg_Xc: lower segment -->
+    <link name="leg_${index}c">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 -0.35 0"/>
+        <geometry>
+          <mesh filename="file://$(find antsy_description)/meshes/simple_meshes/foot_simple.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="feet" />
+      </visual>
+      <visual>
+        <origin xyz="${leg_c_length} 0 0" />
+        <geometry>
+          <sphere radius="0.0075" />
+        </geometry>
+        <material name="feet" />
+      </visual>
+      <collision>
+        <origin xyz="${leg_c_length/2} 0 0" />
+        <geometry>
+          <box size="${leg_c_length} 0.045 0.05" />
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="${leg_c_length} 0 0" />
+        <geometry>
+          <sphere radius="0.0075" />
+        </geometry>
+        <contact_coefficients mu="0.7" />
+      </collision>
+      <inertial>
+        <mass value="0.100" />
+        <origin xyz="${leg_c_length/2} 0 0" rpy="0 -0.35 0" />
+        <inertia ixx="0.000195" iyy="0.000010" izz="0.000195"
+                 ixy="0"        ixz="0"        iyz="0" />
+      </inertial>
+    </link>
+    <joint name="leg_${index}b__leg_${index}c" type="revolute">
+      <axis xyz="0 1 0" />
+      <limit lower="${joint_c_limit_lower}" upper="${joint_c_limit_upper}"
+        effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
+      <parent link="leg_${index}b" />
+      <child link="leg_${index}c" />
+      <origin xyz="${leg_b_length} 0 0" rpy="0 0.35 0"/>
+      <dynamics friction="${servo_static_friction}" damping="${servo_damping_friction}" />
+    </joint>
+
+    <!-- Link in the foot ball center to easily refer to that point in KDL -->
+    <link name="foot_${index}" />
+    <joint name="leg_${index}c__foot_${index}" type="fixed">
+      <parent link="leg_${index}c" />
+      <child link="foot_${index}" />
+      <origin xyz="${leg_c_length} 0 0" rpy="0 0.4 0"/>
+    </joint>
+
+    <xacro:servo index="${index*3+0}" joint_name="leg_${index}_base__leg_${index}a" />
+    <xacro:servo index="${index*3+1}" joint_name="leg_${index}a__leg_${index}b" />
+    <xacro:servo index="${index*3+2}" joint_name="leg_${index}b__leg_${index}c" />
+  </xacro:macro>
+
+  <!-- Instantiate the six legs -->
+  <xacro:leg index="0" reflect="1"  xyz=" 0.138  0.0875 0.0" rpy="0 0 ${pi/2 - leg_spreading_angle}" /> 
+  <xacro:leg index="1" reflect="1"  xyz=" 0.00  0.11950 0.0" rpy="0 0 ${pi/2}" /> 
+  <xacro:leg index="2" reflect="1"  xyz="-0.138  0.0875 0.0" rpy="0 0 ${pi/2 + leg_spreading_angle}" />
+
+  <xacro:leg index="3" reflect="-1" xyz="-0.138 -0.0875 0.0" rpy="0 0 ${-pi/2 -leg_spreading_angle}" />
+  <xacro:leg index="4" reflect="-1" xyz=" 0.00 -0.11950 0.0" rpy="0 0 ${-pi/2}" />
+  <xacro:leg index="5" reflect="-1" xyz=" 0.138 -0.0875 0.0" rpy="0 0 ${-pi/2 + leg_spreading_angle}" /> 
+
+
+  <!-- Sensors -->
+  <link name="imu" />
+  <joint name="base_link__imu" type="fixed"> 
+    <parent link="base_link" />
+    <child link="imu" />
+    <!-- TODO set correct pose -->
+    <origin xyz="0 0 0.05" />
+  </joint>
+
+  <!-- Gazebo (simulation only) -->
+  <!-- docs: https://github.com/gazebosim/gz-sim/tree/main/src/systems -->
+  <gazebo>
+    <plugin
+      filename="gz-sim-odometry-publisher-system"
+      name="gz::sim::systems::OdometryPublisher">
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <odom_topic>/model/hexapod/odometry</odom_topic>
+      <odom_frame>world</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+    </plugin>
+    <plugin
+      filename="gz-sim-joint-state-publisher-system"
+      name="gz::sim::systems::JointStatePublisher">
+      <topic>/joint_state</topic>
+    </plugin>
+    <!-- TODO doesn't work, no imu topic in Gazebo gets published -->
+    <plugin
+      filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
+  </gazebo>
+</robot>

@@ -4,7 +4,7 @@
 <name>antsy_description</name>
   <version>0.0.0</version>
 <description>The ANTSY_description package</description>
-  <maintainer email="todo@todo.com">author</maintainer>
+  <maintainer email="pedrosr711@gmail.com">author</maintainer>
   <license>MIT</license>
 
   <depend>xacro</depend>
