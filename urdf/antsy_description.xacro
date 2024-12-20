@@ -24,11 +24,10 @@
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.300" />
-      <origin xyz="0 0 0" />
-      <inertia ixx="0.0021" iyy="0.0046" izz="0.0065"
-               ixy="0" ixz="0" iyz="0" />
-    </inertial>
+    <origin xyz="0.00014120578374947324 0.000907462590201314 -0.0004863329579636028" rpy="0 0 0"/>
+    <mass value="0.9"/> <!-- changed from  6.980366975019921 -->
+    <inertia ixx="0.035507" ixy="8e-06" ixz="-1.7e-05" iyy="0.050259" iyz="4e-06" izz="0.082758"/>
+  </inertial>
   </link>
 
   <!-- legs -->
@@ -74,10 +73,9 @@
         </geometry>
       </collision>
       <inertial>
-        <mass value="0.100" />
+        <mass value="0.09" /> <!-- changed from 0.06644962989519385 -->
         <origin xyz="${leg_a_length/2} 0 0" />
-        <inertia ixx="0.000028" iyy="0.000028" izz="0.000028"
-                 ixy="0"        ixz="0"        iyz="0" />
+            <inertia ixx="3.4e-05" iyy="3.2e-05" izz="2.4e-05" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
       </inertial>
     </link>
     <joint name="leg_${index}_base__leg_${index}a" type="revolute">
@@ -105,10 +103,10 @@
         </geometry>
       </collision>
       <inertial>
-        <mass value="0.100" />
+        <mass value="0.08" /> <!-- changed from 0.029822153915739318 -->
         <origin xyz="${leg_b_length/2} 0 0" />
-        <inertia ixx="0.000195" iyy="0.000010" izz="0.000195"
-                 ixy="0"        ixz="0"        iyz="0" />
+        <inertia ixx="2.7e-05" iyy="1.9e-05" izz="4.1e-05" ixy="0.0" iyz="-1e-06" ixz="-0.0"/>
+
       </inertial>
     </link>
     <joint name="leg_${index}a__leg_${index}b" type="revolute">
@@ -151,10 +149,9 @@
         <contact_coefficients mu="0.7" />
       </collision>
       <inertial>
-        <mass value="0.100" />
+        <mass value="0.030" /> <!-- changed from 0.08076187945098641 -->
         <origin xyz="${leg_c_length/2} 0 0" rpy="0 -0.35 0" />
-        <inertia ixx="0.000195" iyy="0.000010" izz="0.000195"
-                 ixy="0"        ixz="0"        iyz="0" />
+        <inertia ixx="0.000205" iyy="3.9e-05" izz="0.000199" ixy="2e-06" iyz="4.1e-05" ixz="-0.0"/>
       </inertial>
     </link>
     <joint name="leg_${index}b__leg_${index}c" type="revolute">
