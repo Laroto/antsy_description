@@ -48,7 +48,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="leg" params="index reflect xyz rpy">
+  <xacro:macro name="leg" params="index reflect_coxa reflect_tibia reflect_foot xyz rpy">
     <!-- leg_X: fixed to base_link -->
     <link name="leg_${index}" />
     <joint name="base_link__leg_${index}" type="fixed"> 
@@ -79,9 +79,9 @@
       </inertial>
     </link>
     <joint name="leg_${index}_base__leg_${index}a" type="revolute">
-      <axis xyz="0 0 1" />
+      <axis xyz="0 0 ${reflect_coxa}" />
       <limit lower="${joint_a_limit_lower}" upper="${joint_a_limit_upper}"
-          effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
+        effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
       <parent link="leg_${index}" />
       <child link="leg_${index}a" />
       <dynamics friction="${servo_static_friction}" damping="${servo_damping_friction}" />
@@ -110,7 +110,7 @@
       </inertial>
     </link>
     <joint name="leg_${index}a__leg_${index}b" type="revolute">
-      <axis xyz="0 1 0" />
+      <axis xyz="0 ${reflect_tibia} 0" />
       <limit lower="${joint_b_limit_lower}" upper="${joint_b_limit_upper}"
         effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
       <parent link="leg_${index}a" />
@@ -155,7 +155,7 @@
       </inertial>
     </link>
     <joint name="leg_${index}b__leg_${index}c" type="revolute">
-      <axis xyz="0 1 0" />
+      <axis xyz="0 ${reflect_foot} 0" />
       <limit lower="${joint_c_limit_lower}" upper="${joint_c_limit_upper}"
         effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
       <parent link="leg_${index}b" />
@@ -178,14 +178,13 @@
   </xacro:macro>
 
   <!-- Instantiate the six legs -->
-  <xacro:leg index="0" reflect="1"  xyz=" 0.138  0.0875 0.0" rpy="0 0 ${pi/2 - leg_spreading_angle}" /> 
-  <xacro:leg index="1" reflect="1"  xyz=" 0.00  0.11950 0.0" rpy="0 0 ${pi/2}" /> 
-  <xacro:leg index="2" reflect="1"  xyz="-0.138  0.0875 0.0" rpy="0 0 ${pi/2 + leg_spreading_angle}" />
+  <xacro:leg index="0" reflect_coxa="1" reflect_tibia="-1" reflect_foot="1" xyz=" 0.138  0.0875 0.0" rpy="0 0 ${pi/2 - leg_spreading_angle}" /> 
+  <xacro:leg index="1" reflect_coxa="1" reflect_tibia="-1" reflect_foot="1"  xyz=" 0.00  0.11950 0.0" rpy="0 0 ${pi/2}" /> 
+  <xacro:leg index="2" reflect_coxa="1" reflect_tibia="-1" reflect_foot="1"  xyz="-0.138  0.0875 0.0" rpy="0 0 ${pi/2 + leg_spreading_angle}" />
 
-  <xacro:leg index="3" reflect="-1" xyz="-0.138 -0.0875 0.0" rpy="0 0 ${-pi/2 -leg_spreading_angle}" />
-  <xacro:leg index="4" reflect="-1" xyz=" 0.00 -0.11950 0.0" rpy="0 0 ${-pi/2}" />
-  <xacro:leg index="5" reflect="-1" xyz=" 0.138 -0.0875 0.0" rpy="0 0 ${-pi/2 + leg_spreading_angle}" /> 
-
+  <xacro:leg index="3" reflect_coxa="1" reflect_tibia="1" reflect_foot="-1" xyz="-0.138 -0.0875 0.0" rpy="0 0 ${-pi/2 -leg_spreading_angle}" />
+  <xacro:leg index="4" reflect_coxa="1" reflect_tibia="1" reflect_foot="-1" xyz=" 0.00 -0.11950 0.0" rpy="0 0 ${-pi/2}" />
+  <xacro:leg index="5" reflect_coxa="1" reflect_tibia="1" reflect_foot="-1" xyz=" 0.138 -0.0875 0.0" rpy="0 0 ${-pi/2 + leg_spreading_angle}" /> 
 
   <!-- Sensors -->
   <link name="imu" />
