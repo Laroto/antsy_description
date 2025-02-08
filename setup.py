@@ -1,5 +1,6 @@
 import os
 from setuptools import setup
+from setuptools import find_packages
 from glob import glob
 
 def collect_files_with_paths(base_dir, install_base):
