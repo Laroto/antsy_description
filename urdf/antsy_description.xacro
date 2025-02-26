@@ -24,11 +24,10 @@
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.300" />
-      <origin xyz="0 0 0" />
-      <inertia ixx="0.0021" iyy="0.0046" izz="0.0065"
-               ixy="0" ixz="0" iyz="0" />
-    </inertial>
+    <origin xyz="0.00014120578374947324 0.000907462590201314 -0.0004863329579636028" rpy="0 0 0"/>
+    <mass value="0.9"/> <!-- changed from  6.980366975019921 -->
+    <inertia ixx="0.035507" ixy="8e-06" ixz="-1.7e-05" iyy="0.050259" iyz="4e-06" izz="0.082758"/>
+  </inertial>
   </link>
 
   <!-- legs -->
@@ -49,7 +48,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="leg" params="index reflect xyz rpy">
+  <xacro:macro name="leg" params="index reflect_coxa reflect_tibia reflect_foot xyz rpy">
     <!-- leg_X: fixed to base_link -->
     <link name="leg_${index}" />
     <joint name="base_link__leg_${index}" type="fixed"> 
@@ -68,22 +67,21 @@
         <material name="feet" />
       </visual>
       <collision>
-        <origin xyz="${leg_a_length/2} 0.0 0.0"/>
+        <origin xyz="${leg_a_length/2} 0.05 0.05"/>
         <geometry>
           <box size="${leg_a_length} 0.05 0.05" />
         </geometry>
       </collision>
       <inertial>
-        <mass value="0.100" />
+        <mass value="0.09" /> <!-- changed from 0.06644962989519385 -->
         <origin xyz="${leg_a_length/2} 0 0" />
-        <inertia ixx="0.000028" iyy="0.000028" izz="0.000028"
-                 ixy="0"        ixz="0"        iyz="0" />
+            <inertia ixx="3.4e-05" iyy="3.2e-05" izz="2.4e-05" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
       </inertial>
     </link>
     <joint name="leg_${index}_base__leg_${index}a" type="revolute">
-      <axis xyz="0 0 1" />
+      <axis xyz="0 0 ${reflect_coxa}" />
       <limit lower="${joint_a_limit_lower}" upper="${joint_a_limit_upper}"
-          effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
+        effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
       <parent link="leg_${index}" />
       <child link="leg_${index}a" />
       <dynamics friction="${servo_static_friction}" damping="${servo_damping_friction}" />
@@ -105,14 +103,14 @@
         </geometry>
       </collision>
       <inertial>
-        <mass value="0.100" />
+        <mass value="0.08" /> <!-- changed from 0.029822153915739318 -->
         <origin xyz="${leg_b_length/2} 0 0" />
-        <inertia ixx="0.000195" iyy="0.000010" izz="0.000195"
-                 ixy="0"        ixz="0"        iyz="0" />
+        <inertia ixx="2.7e-05" iyy="1.9e-05" izz="4.1e-05" ixy="0.0" iyz="-1e-06" ixz="-0.0"/>
+
       </inertial>
     </link>
     <joint name="leg_${index}a__leg_${index}b" type="revolute">
-      <axis xyz="0 1 0" />
+      <axis xyz="0 ${reflect_tibia} 0" />
       <limit lower="${joint_b_limit_lower}" upper="${joint_b_limit_upper}"
         effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
       <parent link="leg_${index}a" />
@@ -151,14 +149,13 @@
         <contact_coefficients mu="0.7" />
       </collision>
       <inertial>
-        <mass value="0.100" />
+        <mass value="0.030" /> <!-- changed from 0.08076187945098641 -->
         <origin xyz="${leg_c_length/2} 0 0" rpy="0 -0.35 0" />
-        <inertia ixx="0.000195" iyy="0.000010" izz="0.000195"
-                 ixy="0"        ixz="0"        iyz="0" />
+        <inertia ixx="0.000205" iyy="3.9e-05" izz="0.000199" ixy="2e-06" iyz="4.1e-05" ixz="-0.0"/>
       </inertial>
     </link>
     <joint name="leg_${index}b__leg_${index}c" type="revolute">
-      <axis xyz="0 1 0" />
+      <axis xyz="0 ${reflect_foot} 0" />
       <limit lower="${joint_c_limit_lower}" upper="${joint_c_limit_upper}"
         effort="${servo_effort_limit}" velocity="${servo_velocity_limit}" />
       <parent link="leg_${index}b" />
@@ -181,14 +178,13 @@
   </xacro:macro>
 
   <!-- Instantiate the six legs -->
-  <xacro:leg index="0" reflect="1"  xyz=" 0.138  0.0875 0.0" rpy="0 0 ${pi/2 - leg_spreading_angle}" /> 
-  <xacro:leg index="1" reflect="1"  xyz=" 0.00  0.11950 0.0" rpy="0 0 ${pi/2}" /> 
-  <xacro:leg index="2" reflect="1"  xyz="-0.138  0.0875 0.0" rpy="0 0 ${pi/2 + leg_spreading_angle}" />
+  <xacro:leg index="0" reflect_coxa="1" reflect_tibia="-1" reflect_foot="1" xyz=" 0.138  0.0875 0.0" rpy="0 0 ${pi/2 - leg_spreading_angle}" /> 
+  <xacro:leg index="1" reflect_coxa="1" reflect_tibia="-1" reflect_foot="1"  xyz=" 0.00  0.11950 0.0" rpy="0 0 ${pi/2}" /> 
+  <xacro:leg index="2" reflect_coxa="1" reflect_tibia="-1" reflect_foot="1"  xyz="-0.138  0.0875 0.0" rpy="0 0 ${pi/2 + leg_spreading_angle}" />
 
-  <xacro:leg index="3" reflect="-1" xyz="-0.138 -0.0875 0.0" rpy="0 0 ${-pi/2 -leg_spreading_angle}" />
-  <xacro:leg index="4" reflect="-1" xyz=" 0.00 -0.11950 0.0" rpy="0 0 ${-pi/2}" />
-  <xacro:leg index="5" reflect="-1" xyz=" 0.138 -0.0875 0.0" rpy="0 0 ${-pi/2 + leg_spreading_angle}" /> 
-
+  <xacro:leg index="3" reflect_coxa="1" reflect_tibia="1" reflect_foot="-1" xyz="-0.138 -0.0875 0.0" rpy="0 0 ${-pi/2 -leg_spreading_angle}" />
+  <xacro:leg index="4" reflect_coxa="1" reflect_tibia="1" reflect_foot="-1" xyz=" 0.00 -0.11950 0.0" rpy="0 0 ${-pi/2}" />
+  <xacro:leg index="5" reflect_coxa="1" reflect_tibia="1" reflect_foot="-1" xyz=" 0.138 -0.0875 0.0" rpy="0 0 ${-pi/2 + leg_spreading_angle}" /> 
 
   <!-- Sensors -->
   <link name="imu" />
@@ -207,8 +203,8 @@
       name="gz::sim::systems::OdometryPublisher">
       <odom_publish_frequency>50</odom_publish_frequency>
       <odom_topic>/antsy/odometry</odom_topic>
-      <odom_frame>odom</odom_frame>
-      <robot_base_frame>base_footprint</robot_base_frame>
+      <odom_frame>world</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
     </plugin>
     <plugin
       filename="gz-sim-joint-state-publisher-system"
