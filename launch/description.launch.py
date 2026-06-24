@@ -14,7 +14,6 @@ def generate_launch_description():
     servo_effort_limit = LaunchConfiguration('servo_effort_limit')
     servo_static_friction = LaunchConfiguration('servo_static_friction')
     servo_damping_friction = LaunchConfiguration('servo_damping_friction')
-    servo_p_gain = LaunchConfiguration('servo_p_gain')
 
     share_dir = get_package_share_directory('antsy_description')
     xacro_file = os.path.join(share_dir, 'urdf', 'antsy_description.xacro')
@@ -26,14 +25,13 @@ def generate_launch_description():
         ' servo_effort_limit:=', servo_effort_limit,
         ' servo_static_friction:=', servo_static_friction,
         ' servo_damping_friction:=', servo_damping_friction,
-        ' servo_p_gain:=', servo_p_gain,
     ]), value_type=str)
 
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='true',
-            description='Use simulation (Gazebo) clock if true'),
+            description='Use simulation clock if true'),
         DeclareLaunchArgument(
             'xacro_path',
             default_value=xacro_file,
@@ -54,10 +52,6 @@ def generate_launch_description():
             'servo_damping_friction',
             default_value='0.1',
             description='URDF joint damping friction'),
-        DeclareLaunchArgument(
-            'servo_p_gain',
-            default_value='17.8',
-            description='Gazebo joint position controller P gain'),
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
