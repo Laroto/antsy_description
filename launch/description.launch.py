@@ -10,12 +10,24 @@ def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     xacro_path = LaunchConfiguration('xacro_path')
+    servo_velocity_limit = LaunchConfiguration('servo_velocity_limit')
+    servo_effort_limit = LaunchConfiguration('servo_effort_limit')
+    servo_static_friction = LaunchConfiguration('servo_static_friction')
+    servo_damping_friction = LaunchConfiguration('servo_damping_friction')
+    servo_p_gain = LaunchConfiguration('servo_p_gain')
 
     share_dir = get_package_share_directory('antsy_description')
     xacro_file = os.path.join(share_dir, 'urdf', 'antsy_description.xacro')
 
     # Convert xacro to urdf
-    urdf = ParameterValue(Command(['xacro', ' ', xacro_file]), value_type=str)
+    urdf = ParameterValue(Command([
+        'xacro', ' ', xacro_path,
+        ' servo_velocity_limit:=', servo_velocity_limit,
+        ' servo_effort_limit:=', servo_effort_limit,
+        ' servo_static_friction:=', servo_static_friction,
+        ' servo_damping_friction:=', servo_damping_friction,
+        ' servo_p_gain:=', servo_p_gain,
+    ]), value_type=str)
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -26,6 +38,26 @@ def generate_launch_description():
             'xacro_path',
             default_value=xacro_file,
             description='path to urdf.xacro file to publish'),
+        DeclareLaunchArgument(
+            'servo_velocity_limit',
+            default_value='5.6',
+            description='URDF joint velocity limit in rad/s'),
+        DeclareLaunchArgument(
+            'servo_effort_limit',
+            default_value='4.25',
+            description='URDF joint effort limit'),
+        DeclareLaunchArgument(
+            'servo_static_friction',
+            default_value='0.3',
+            description='URDF joint static friction'),
+        DeclareLaunchArgument(
+            'servo_damping_friction',
+            default_value='0.1',
+            description='URDF joint damping friction'),
+        DeclareLaunchArgument(
+            'servo_p_gain',
+            default_value='17.8',
+            description='Gazebo joint position controller P gain'),
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',

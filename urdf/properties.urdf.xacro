@@ -13,23 +13,22 @@
   <!-- ********** -->
   <!-- Parameters -->
   <!-- ********** -->
+  <xacro:arg name="servo_velocity_limit" default="5.6" />
+  <xacro:arg name="servo_effort_limit" default="4.25" />
+  <xacro:arg name="servo_static_friction" default="0.3" />
+  <xacro:arg name="servo_damping_friction" default="0.1" />
+  <xacro:arg name="servo_p_gain" default="17.8" />
+
   <xacro:property name="leg_spreading_angle" value="1.0472" />
   <xacro:property name="leg_a_length" value="0.04375" />
   <xacro:property name="leg_b_length" value="0.100" />
   <xacro:property name="leg_c_length" value="0.150" />
 
-  <!-- datasheet tells 5.81 -->
-  <!-- <xacro:property name="servo_velocity_limit" value="5.6" /> -->
-
-  <!-- debug setting -->
-  <xacro:property name="servo_velocity_limit" value="110.2" /> 
-
-
-
-  <xacro:property name="servo_effort_limit" value="4.25" /> <!-- datasheet tells 4.0-4.4 -->
-  <xacro:property name="servo_static_friction" value="0.3" />
-  <xacro:property name="servo_damping_friction" value="0.1" />
-  <xacro:property name="servo_p_gain" value="17.8" />
+  <xacro:property name="servo_velocity_limit" value="$(arg servo_velocity_limit)" />
+  <xacro:property name="servo_effort_limit" value="$(arg servo_effort_limit)" />
+  <xacro:property name="servo_static_friction" value="$(arg servo_static_friction)" />
+  <xacro:property name="servo_damping_friction" value="$(arg servo_damping_friction)" />
+  <xacro:property name="servo_p_gain" value="$(arg servo_p_gain)" />
 
   <xacro:property name="joint_a_limit_lower" value="-1.5708" />
   <xacro:property name="joint_a_limit_upper" value="1.5708" />
