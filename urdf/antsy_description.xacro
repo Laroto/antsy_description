@@ -31,22 +31,6 @@
   </link>
 
   <!-- legs -->
-  <xacro:macro name="servo" params="joint_name">
-    <gazebo>
-      <plugin
-        filename="gz-sim-joint-position-controller-system"
-        name="gz::sim::systems::JointPositionController">
-        <joint_name>${joint_name}</joint_name>
-        <topic>/antsy/joint_position/${joint_name}</topic>
-        <cmd_max>${servo_effort_limit}</cmd_max>
-        <cmd_min>${-servo_effort_limit}</cmd_min>
-        <p_gain>${servo_p_gain}</p_gain>
-        <i_gain>0.</i_gain>
-        <d_gain>0.</d_gain>
-      </plugin>
-    </gazebo>
-  </xacro:macro>
-
   <xacro:macro name="leg" params="index reflect_coxa reflect_tibia reflect_foot xyz rpy">
     <!-- leg_X: fixed to base_link -->
     <link name="leg_${index}" />
@@ -171,9 +155,6 @@
       <origin xyz="${leg_c_length} 0 0" rpy="0 0.4 0"/>
     </joint>
 
-    <xacro:servo joint_name="leg_${index}_base__leg_${index}a" />
-    <xacro:servo joint_name="leg_${index}a__leg_${index}b" />
-    <xacro:servo joint_name="leg_${index}b__leg_${index}c" />
   </xacro:macro>
 
   <!-- Instantiate the six legs -->
@@ -194,27 +175,4 @@
     <origin xyz="0 0 0.05" />
   </joint>
 
-  <!-- Gazebo (simulation only) -->
-  <!-- docs: https://github.com/gazebosim/gz-sim/tree/main/src/systems -->
-  <gazebo>
-    <plugin
-      filename="gz-sim-odometry-publisher-system"
-      name="gz::sim::systems::OdometryPublisher">
-      <odom_publish_frequency>50</odom_publish_frequency>
-      <odom_topic>/antsy/odometry</odom_topic>
-      <odom_frame>odom</odom_frame>
-      <robot_base_frame>base_footprint</robot_base_frame>
-    </plugin>
-    <plugin
-      filename="gz-sim-joint-state-publisher-system"
-      name="gz::sim::systems::JointStatePublisher">
-      <topic>/antsy/joint_state</topic>
-    </plugin>
-    <!-- TODO doesn't work, no imu topic in Gazebo gets published -->
-    <plugin
-      filename="gz-sim-imu-system"
-      name="gz::sim::systems::Imu">
-      <topic>/antsy/imu</topic>
-    </plugin>
-  </gazebo>
 </robot>
